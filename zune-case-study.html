@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Zune — A Research Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Zune_icon_without_wordmark.svg/1920px-Zune_icon_without_wordmark.svg.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --zune-brown: #5C3D1E;
+    --zune-orange: #C96A00;
+    --zune-amber: #E8A020;
+    --ink: #1A1108;
+    --muted: #7A6A58;
+    --cream: #FAF7F2;
+    --warm-white: #FFFCF8;
+    --border: #E8E0D4;
+    --light-brown: #F5EDE0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,252,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+ .nav-logo { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--light); text-decoration: none; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--zune-orange); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+    background: var(--warm-white);
+  }
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(120px, 18vw, 240px);
+    color: rgba(92,61,30,0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.02em;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--zune-orange);
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 1.0;
+    color: var(--zune-brown);
+    letter-spacing: -0.02em;
+    max-width: 800px;
+    margin-bottom: 28px;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-stat span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .hero-stat strong {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--zune-brown);
+    font-weight: 400;
+  }
+  .hero-image-wrap {
+    position: absolute;
+    right: 90px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 580px;
+  }
+  .hero-image-wrap img {
+    width: 100%;
+    border-radius: 4px;
+    filter: saturate(0.9);
+  }
+  .byline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 60px; border-top: 1px solid var(--border); }
+  section:nth-child(even) { background: var(--cream); }
+
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--zune-orange);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.1;
+    color: var(--zune-brown);
+    letter-spacing: -0.01em;
+    margin-bottom: 48px;
+    max-width: 680px;
+  }
+  .section-intro {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 680px;
+    margin-bottom: 64px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* GRID LAYOUTS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+  /* CARDS */
+  .card {
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--warm-white);
+  }
+  .card-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    color: var(--zune-amber);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--zune-brown);
+    margin-bottom: 10px;
+  }
+  .card-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .card-accent {
+    border-left: 3px solid var(--zune-amber);
+    padding: 28px 32px;
+    background: var(--light-brown);
+  }
+  .card-accent .card-title { color: var(--zune-brown); }
+
+  /* DARK CARD */
+  .card-dark {
+    background: var(--zune-brown);
+    color: var(--cream);
+    padding: 32px;
+    border-radius: 2px;
+  }
+  .card-dark .card-title { color: var(--zune-amber); }
+  .card-dark .card-body { color: rgba(255,252,248,0.7); }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--zune-amber);
+    padding: 32px 48px;
+    margin: 48px 0;
+    background: var(--light-brown);
+  }
+  .pull-quote p {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--zune-brown);
+    font-style: italic;
+  }
+  .pull-quote cite {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -44px; top: 8px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--zune-amber);
+    border: 2px solid var(--warm-white);
+    box-shadow: 0 0 0 1px var(--zune-amber);
+  }
+  .timeline-year {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--zune-orange);
+    margin-bottom: 6px;
+  }
+  .timeline-event {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--zune-brown);
+    margin-bottom: 6px;
+  }
+  .timeline-desc { font-size: 14px; color: var(--muted); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 24px; }
+  thead tr { background: var(--zune-brown); }
+  thead th {
+    color: var(--cream);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:nth-child(even) { background: var(--light-brown); }
+  tbody td { padding: 12px 16px; color: var(--ink); }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .swot-box { padding: 36px; }
+  .swot-box.s { background: #EFF5EB; }
+  .swot-box.w { background: #FDF1EC; }
+  .swot-box.o { background: #EBF0F5; }
+  .swot-box.t { background: #F5EBEB; }
+  .swot-label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .swot-box.s .swot-label { color: #3A6B2A; }
+  .swot-box.w .swot-label { color: #B04A20; }
+  .swot-box.o .swot-label { color: #2A4B6B; }
+  .swot-box.t .swot-label { color: #8B2A2A; }
+  .swot-box ul { list-style: none; }
+  .swot-box ul li {
+    font-size: 13px;
+    color: var(--ink);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding-left: 16px;
+    position: relative;
+  }
+  .swot-box ul li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--muted);
+  }
+
+  /* GUERRILLA */
+  .guerrilla-card {
+    display: flex;
+    gap: 32px;
+    padding: 40px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    background: var(--warm-white);
+    align-items: flex-start;
+  }
+  .guerrilla-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 56px;
+    color: var(--border);
+    line-height: 1;
+    min-width: 60px;
+    font-weight: 400;
+  }
+  .guerrilla-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--zune-orange);
+    border: 1px solid var(--zune-orange);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .logo img {
+  height: 60px; /* adjust as needed */
+}
+  .guerrilla-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--zune-brown);
+    margin-bottom: 10px;
+  }
+  .guerrilla-desc { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .guerrilla-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .verdict-hit { color: #4A7A3A; }
+  .verdict-miss { color: #8B2A2A; }
+
+  /* PORTER'S FIVE */
+  .porter-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .porter-item {
+    display: grid;
+    grid-template-columns: 200px 1fr 100px;
+    gap: 24px;
+    align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .porter-force {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--zune-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .porter-desc { font-size: 14px; color: var(--muted); }
+  .porter-rating {
+    text-align: right;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .rating-high { color: #8B2A2A; }
+  .rating-med { color: #B07A20; }
+  .rating-low { color: #4A7A3A; }
+
+  /* IMAGE BLOCKS */
+  .img-block { 
+    width: 100%; 
+    border-radius: 2px; 
+    overflow: hidden;
+    margin: 48px 0;
+  }
+  .img-block img { 
+    width: 100%;
+    display: block;
+    filter: saturate(0.85) contrast(1.02);
+  }
+  .img-caption {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 12px;
+    text-transform: uppercase;
+  }
+
+  .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 48px 0; }
+  .img-grid img { width: 100%; height: 280px; object-fit: cover; border-radius: 2px; filter: saturate(0.85); }
+
+  /* LESSON ITEMS */
+  .lesson-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .lesson-n {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--border);
+    font-weight: 400;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .lesson-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--zune-brown);
+    margin-bottom: 8px;
+  }
+  .lesson-body { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* MARKET SHARE BAR */
+  .mkt-bar-item { margin-bottom: 20px; }
+  .mkt-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .mkt-bar-label span { color: var(--muted); }
+  .mkt-bar-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .mkt-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--zune-orange);
+    transition: width 1s ease;
+  }
+  .mkt-bar-fill.blue { background: #3A5A8A; }
+  .mkt-bar-fill.gray { background: #9A8A78; }
+
+  /* FOOTER */
+  footer {
+    padding: 64px 60px;
+    background: var(--zune-brown);
+    color: rgba(255,252,248,0.6);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .footer-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--cream);
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .footer-by {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--zune-amber);
+  }
+  .footer-note { font-size: 12px; max-width: 280px; text-align: right; line-height: 1.6; }
+
+  /* FRAMEWORK BOX */
+  .framework-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .framework-badge {
+    background: var(--zune-brown);
+    color: var(--cream);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+  .framework-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--zune-brown);
+    font-weight: 400;
+  }
+
+  /* METRIC TABLE */
+  .metric-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    font-size: 14px;
+  }
+  .metric-row.header {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 12px;
+  }
+  .metric-row > *:first-child { color: var(--zune-brown); font-weight: 500; }
+  .metric-miss { color: #8B2A2A; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 64px; }
+    .hero-image-wrap { display: none; }
+    .two-col, .three-col, .four-col { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .porter-item { grid-template-columns: 1fr; }
+    .metric-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .img-grid { grid-template-columns: 1fr; }
+    .guerrilla-card { flex-direction: column; }
+    .footer-inner { flex-direction: column; gap: 24px; }
+    .footer-note { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Zune_logo_and_wordmark.svg" alt="Logo">
+  </div>
+  <div class="nav-links">
+    <a href="#context">Summary</a>
+    <a href="#guerrilla">Marketing Tactic</a>
+    <a href="#frameworks">Frameworks Used</a>
+    <a href="#postmortem">Post-Mortem</a>
+    <a href="#lessons">Takeaways</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="border-top:none; padding-top:0;">
+  <div class="hero-bg-text">ZUNE</div>
+  <div class="hero-image-wrap">
+    <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*QRVj8KgOTApwoeN_nMz1ow.jpeg" alt="Microsoft Zune Device">
+  </div>
+  <h1 class="hero-title">Microsoft<br>Zune</h1>
+  <p class="byline">A case study by Siddhanta Ghosh</p>
+  <p class="hero-subtitle">A comprehensive strategic analysis of Microsoft's ambitious attempt to dethrone the iPod and the lessons embedded in a beautifully engineered failure.</p>
+  <div class="hero-meta">
+    <div class="hero-stat"><span>Launch Year</span><strong>2006</strong></div>
+    <div class="hero-stat"><span>Discontinued</span><strong>2011</strong></div>
+    <div class="hero-stat"><span>Peak Market Share</span><strong>2%</strong></div>
+    <div class="hero-stat"><span>iPod Share (2006)</span><strong>76%</strong></div>
+    <div class="hero-stat"><span>Approximate Marketing Budget</span><strong>$100M+</strong></div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="context">
+  <p class="section-eyebrow">Brief Summary</p>
+  <h2 class="section-title">The Rise & Fall of a Social Music Platform</h2>
+  <div class="two-col">
+    <div>
+      <p class="section-intro" style="margin-bottom:24px;">In 2006, Microsoft made a $100M+ bet that music was fundamentally social — and that the iPod's solitary listening experience was a design flaw, not a feature. They were right about the insight. They were catastrophically wrong about everything else.</p>
+      <p style="font-size:14px; color:var(--muted); line-height:1.75;">Launched five years after the iPod had achieved cultural dominance, Zune brought genuinely innovative ideas to market: wireless device-to-device sharing, an unlimited subscription model that predated Spotify by years, a beautiful design language that would eventually influence Windows Phone and Xbox. Yet it never exceeded 2% market share, never turned profitable, and was discontinued quietly in October 2011. The Zune story is not simply a tale of bad execution — it is a masterclass in strategic timing, market entry theory, and the immovable weight of network effects.</p>
+    </div>
+    <div>
+      <div class="card-accent" style="margin-bottom:20px;">
+        <div class="card-title">The Core Paradox</div>
+        <div class="card-body">Zune was technically superior in several dimensions to the iPod — larger screen, wireless sync, built-in FM radio, subscription streaming. Yet it failed comprehensively. This paradox is the central teaching of this case study: features do not win markets. Ecosystems do.</div>
+      </div>
+      <div class="card-accent">
+        <div class="card-title">Why This Case Matters in 2026</div>
+        <div class="card-body">Zune's subscription model (Zune Pass, $14.99/mo with 10 songs to keep) is the exact model that Spotify, Apple Music, and every streaming service uses today. Microsoft was right about the future — they just arrived too early, with too little ecosystem, and too corporate a brand.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXT -->
+<section>
+  <p class="section-eyebrow">Market Context</p>
+  <h2 class="section-title">Entering a 76% Occupied Battlefield</h2>
+  <p class="section-intro">To understand Zune's failure requires understanding the sheer scale of the obstacle Microsoft voluntarily chose to confront.</p>
+  
+  <div class="img-grid">
+    <div>
+      <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/10/VH_Zune_Site.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200" alt="Microsoft Zune 30 device" onerror="this.src='https://statics.fellou.ai/user-contents/1774690585050-5aqutk.png'">
+      <p class="img-caption">Zune 30 — The original 2006 device in signature brown</p>
+    </div>
+    <div>
+      <img src="https://media.wired.com/photos/59338b207965e75f5f3c897d/3:2/w_1920,c_limit/zunehd.jpg" alt="Zune Metro UI">
+      <p class="img-caption">Metro UI — The design language that would outlive the device</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:48px;">
+    <p class="card-label" style="margin-bottom:20px;">Market Share — Portable Media Players (2006)</p>
+    <div class="mkt-bar-item">
+      <div class="mkt-bar-label">Apple iPod <span>76%</span></div>
+      <div class="mkt-bar-track"><div class="mkt-bar-fill blue" style="width:76%"></div></div>
+    </div>
+    <div class="mkt-bar-item">
+      <div class="mkt-bar-label">SanDisk Sansa <span>10%</span></div>
+      <div class="mkt-bar-track"><div class="mkt-bar-fill gray" style="width:10%"></div></div>
+    </div>
+    <div class="mkt-bar-item">
+      <div class="mkt-bar-label">Creative Zen <span>5%</span></div>
+      <div class="mkt-bar-track"><div class="mkt-bar-fill gray" style="width:5%"></div></div>
+    </div>
+    <div class="mkt-bar-item">
+      <div class="mkt-bar-label">Microsoft Zune <span>1% (Nov launch)</span></div>
+      <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:1%"></div></div>
+    </div>
+  </div>
+
+  <div class="three-col">
+    <div class="card">
+      <div class="card-label">The PlaysForSure Failure</div>
+      <div class="card-title">Why Microsoft Abandoned Its Own Ecosystem</div>
+      <div class="card-body">Before Zune, Microsoft licensed its PlaysForSure DRM to hardware makers — a fragmented model that produced inconsistent experiences and no unified brand. This led Microsoft to copy Apple's vertical integration playbook, creating both hardware and software in-house. It was the right diagnosis. The execution was flawed.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Strategic Imperative</div>
+      <div class="card-title">Protecting the Windows Media Value Chain</div>
+      <div class="card-body">Microsoft feared that Apple's iTunes gaining traction on Windows PCs meant losing control of the digital media ecosystem. With 150M+ iPods sold and 1 billion songs purchased on iTunes, the threat was real. Zune was a defensive play as much as an offensive one — protecting Windows' relevance in the media era.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">The Timing Trap</div>
+      <div class="card-title">Launched Months Before the iPhone</div>
+      <div class="card-body">Zune launched in November 2006. The iPhone launched in June 2007 — just 7 months later. Microsoft entered a market precisely as it was about to be disrupted into obsolescence. The category Zune was built to compete in would shrink from ~85% of portable audio to near-zero within 5 years.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GUERRILLA MARKETING -->
+<section id="guerrilla">
+  <p class="section-eyebrow">Guerrilla Marketing Deep Dive</p>
+  <h2 class="section-title">The Art of Fighting a Culture War with Tactics</h2>
+  <p class="section-intro">Microsoft deployed a sophisticated, multi-layered guerrilla marketing apparatus alongside its $100M+ traditional spend. The guerrilla tactics were, in many ways, the most interesting part of Zune's story — imaginative, sometimes brilliant, occasionally desperate. Here is a forensic breakdown.</p>
+
+  <div class="pull-quote">
+    <p>"Music is social. The iPod makes it solitary. We're going to change that."</p>
+    <cite>— Zune Product Vision, 2006</cite>
+  </div>
+
+  <!-- Tactic 1 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">01</div>
+    <div>
+      <span class="guerrilla-tag">Urban Activation</span>
+      <div class="guerrilla-title">The Zune Arts Program — Street Murals & Commissioned Installations</div>
+      <p class="guerrilla-desc">Microsoft commissioned street artists to create large-scale Zune-themed murals and art installations in high-traffic urban centers — New York, Chicago, Los Angeles, Seattle. The campaign intentionally bypassed traditional advertising spaces, embedding Zune imagery into streetscapes where the target demographic (urban young adults 18–34) lived and moved. Artists were given creative latitude, producing work that felt genuinely countercultural rather than corporate. The strategy borrowed from Red Bull's urban arts playbook — sponsoring culture rather than advertising at it.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Brand Community Theory):</strong> Zune attempted to build brand authenticity by associating with authentic cultural producers. By commissioning actual street artists rather than simulating street art through ad agencies, the campaign generated credibility with tastemakers. The disconnect: the murals were visually striking but product-agnostic — viewers rarely connected the art to Zune's specific features (wireless sharing). Brand awareness without brand comprehension is wasted spend.</p>
+      <div class="guerrilla-verdict verdict-hit">● Partial Hit — Strong awareness, weak message transfer</div>
+    </div>
+  </div>
+
+  <!-- Tactic 2 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">02</div>
+    <div>
+      <span class="guerrilla-tag">Earned Media / Stunt</span>
+      <div class="guerrilla-title">The Zune Tattoo Campaign — Offering a Free Device for Permanent Body Art</div>
+      <p class="guerrilla-desc">In what became one of the most discussed (and mocked) guerrilla marketing stunts of the era, Microsoft offered consumers who tattooed the Zune logo on their bodies a free 30GB Zune device. The stunt was designed to generate earned media, signal brand confidence, and find the most passionate brand advocates — a tactic borrowed from the "superfan activation" playbook used by streetwear brands like Supreme and early-era Red Bull.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Brand Equity & Desperation Signaling):</strong> Keller's Brand Equity Model distinguishes between brand salience (awareness) and brand resonance (deep loyalty). The tattoo stunt theoretically targets resonance — finding people who love the brand enough to mark their bodies. In practice, it backfired on two fronts: (1) it signaled desperation to the market — a brand confident in its future doesn't need to beg for tattoos, and (2) the mockery generated in tech media ("who tattoos a brown MP3 player?") drowned out any positive signal. The stunt created a negative brand resonance amplification loop.</p>
+      <div class="guerrilla-verdict verdict-miss">● Miss — Generated mockery, not advocacy. Desperation signal.</div>
+    </div>
+  </div>
+
+  <!-- Tactic 3 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">03</div>
+    <div>
+      <span class="guerrilla-tag">Community Seeding</span>
+      <div class="guerrilla-title">Campus Ambassador Program — Peer-to-Peer Social Proof</div>
+      <p class="guerrilla-desc">Microsoft seeded Zune devices to campus ambassadors at universities — student influencers tasked with organic product evangelism. This was coordinated with in-store demo stations at campus bookstores, student discount programs, and targeted social media campaigns (this was the MySpace/early Facebook era). The program ran across dozens of campuses during back-to-school seasons 2007 and 2008.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Diffusion of Innovations — Rogers):</strong> Rogers' adoption curve identifies "early adopters" as the critical bridge between innovators and the early majority. Campus programs correctly target this demographic. However, the program suffered from a chicken-and-egg problem: Zune's killer feature (Zune-to-Zune wireless sharing) required other Zune owners nearby. A campus ambassador surrounded by iPod users couldn't demonstrate the product's social value proposition. The seeding strategy failed to create geographic density of users, which would have been required to make the social features visible and compelling.</p>
+      <div class="guerrilla-verdict verdict-miss">● Miss — Network effects required density that was never achieved</div>
+    </div>
+  </div>
+
+  <!-- Tactic 4 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">04</div>
+    <div>
+      <span class="guerrilla-tag">Experiential / Co-branded</span>
+      <div class="guerrilla-title">Concert Sponsorships & Music Festival Activations</div>
+      <p class="guerrilla-desc">Zune partnered with music festivals and concerts — sponsoring stages, creating VIP experiences, and positioning Zune devices and listening stations throughout festival grounds. Artist partnerships with Gnarls Barkley, DJ Shadow, and others created exclusive Zune-only content — early versions of artist-exclusive streaming drops. Special edition devices were designed in collaboration with artists, creating limited collectibles that generated press and collector interest.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Experiential Marketing & Value Co-creation):</strong> Pine & Gilmore's "Experience Economy" posits that brands must deliver memorable experiences, not just products. Festival activations were textbook experience economy plays — putting the product in the hands of music-loving consumers at peak emotional engagement. The co-created artist editions applied Prahalad & Ramaswamy's value co-creation framework, involving consumers and artists in product design. These were among Zune's most strategically coherent marketing efforts. The failure was distribution: without a critical user base, exclusive content became a wasted differentiator.</p>
+      <div class="guerrilla-verdict verdict-hit">● Hit — Strategically coherent, correctly targeted demographic</div>
+    </div>
+  </div>
+
+  <!-- Tactic 5 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">05</div>
+    <div>
+      <span class="guerrilla-tag">Platform Guerrilla</span>
+      <div class="guerrilla-title">Xbox Live Cross-Promotion — The Trojan Horse Strategy</div>
+      <p class="guerrilla-desc">Microsoft leveraged its most successful consumer electronics platform — Xbox 360, with 34M units sold by 2010 — to cross-promote Zune. Dashboard ads, bundled Microsoft Points (a unified currency across Xbox and Zune Marketplace), and the ability to stream Zune music on the Xbox 360 created product integration. This was a genuinely clever guerrilla-adjacent tactic: rather than spending externally to reach the target audience, Microsoft used owned media (Xbox dashboard) to reach a captive, demographically aligned audience at essentially zero marginal cost.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Platform Strategy & Bundling):</strong> Eisenmann, Parker & Van Alstyne's platform theory identifies "envelopment" — using an existing platform to enter an adjacent market — as a key growth tactic. This was Microsoft's most legitimate strategic advantage and its most underexploited one. A deeper Xbox-Zune integration (a "gaming soundtrack" product, Xbox-Zune bundling, game soundtrack streaming) could have created genuine differentiation. Microsoft executed a shallow version of this vision.</p>
+      <div class="guerrilla-verdict verdict-hit">● Hit — Most cost-effective tactic, underexploited potential</div>
+    </div>
+  </div>
+
+  <!-- Tactic 6 -->
+  <div class="guerrilla-card">
+    <div class="guerrilla-num">06</div>
+    <div>
+      <span class="guerrilla-tag">Influencer Seeding</span>
+      <div class="guerrilla-title">Tech Blogger & Music Press Seeding — Early Influencer Marketing</div>
+      <p class="guerrilla-desc">Before "influencer marketing" had a name, Zune's team executed a version of it: seeding devices to music bloggers, tech reviewers, and taste-making critics before launch, creating review cycles and organic coverage. The team also partnered with early music blogs (a thriving ecosystem in 2006-2008 — Pitchfork, Gorilla vs. Bear, Stereogum) for exclusive content partnerships and editorial alignment.</p>
+      <p class="guerrilla-desc"><strong style="color:var(--zune-brown);">The MBA Framework (Two-Step Flow Theory & Opinion Leadership):</strong> Katz & Lazarsfeld's two-step flow model holds that mass media influences opinion leaders, who then influence their peers. By seeding tech bloggers and music critics, Microsoft targeted second-order influencers rather than mass media alone. The strategy was directionally correct — it's how modern influencer marketing works. The execution was weak in one dimension: the reviews were mixed to negative, because the product genuinely had friction points (slow software, confusing UI, DRM restrictions). Influencer seeding works when the product earns advocacy. When the product disappoints, seeded influencers create accelerated negative word-of-mouth.</p>
+      <div class="guerrilla-verdict verdict-miss">● Mixed — Strategy correct, product quality couldn't support the earned media</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>"The tragedy of Zune's marketing wasn't that it tried too hard. It's that it tried everything except making the features discoverable enough that word-of-mouth could do the work."</p>
+    <cite>— Analysis: Guerrilla Execution Gap</cite>
+  </div>
+</section>
+
+<!-- MBA FRAMEWORKS -->
+<section id="frameworks">
+  <p class="section-eyebrow">MBA Frameworks Applied</p>
+  <h2 class="section-title">Dissecting Zune Through Strategic Lenses</h2>
+  <p class="section-intro">The Zune case is rich ground for applying core MBA strategic frameworks. Each lens reveals a different dimension of the failure — and together they build a comprehensive picture of why even well-resourced companies fail in mature markets.</p>
+
+  <!-- SWOT -->
+  <div class="framework-header" style="margin-top:48px;">
+    <span class="framework-badge">Framework 01</span>
+    <div class="framework-title">SWOT Analysis</div>
+  </div>
+  <div class="swot-grid">
+    <div class="swot-box s">
+      <div class="swot-label">Strengths</div>
+      <ul>
+        <li>Wireless sync & sharing (industry first)</li>
+        <li>Zune Pass subscription — ahead of its time</li>
+        <li>Superior screen size & OLED display (Zune HD)</li>
+        <li>Built-in FM/HD Radio</li>
+        <li>Microsoft's financial resources & technical depth</li>
+        <li>Xbox brand integration potential</li>
+        <li>Metro UI design language (prescient)</li>
+        <li>Competitive pricing vs. iPod</li>
+        <li>Strong music label partnerships</li>
+      </ul>
+    </div>
+    <div class="swot-box w">
+      <div class="swot-label">Weaknesses</div>
+      <ul>
+        <li>5-year late market entry vs. iPod</li>
+        <li>Microsoft perceived as "uncool" in consumer electronics</li>
+        <li>Brown color — polarizing, widely mocked</li>
+        <li>No Mac support (excluded affluent 10%)</li>
+        <li>Slow, resource-heavy desktop software</li>
+        <li>DRM restrictions killed viral sharing potential</li>
+        <li>Social features buried in navigation</li>
+        <li>Limited to US/Canada only</li>
+        <li>Confusing "Welcome to the Social" messaging</li>
+        <li>Infamous 2008 Leap Year firmware bug</li>
+      </ul>
+    </div>
+    <div class="swot-box o">
+      <div class="swot-label">Opportunities</div>
+      <ul>
+        <li>Digital music market growing 89% YoY (2006)</li>
+        <li>Subscription model entirely untapped</li>
+        <li>Social networking boom (MySpace, early Facebook)</li>
+        <li>Xbox 360 success (34M units sold by 2010)</li>
+        <li>iPod's high prices creating entry opening</li>
+        <li>Emerging markets with low iPod penetration</li>
+        <li>Video content consumption rising on portable devices</li>
+      </ul>
+    </div>
+    <div class="swot-box t">
+      <div class="swot-label">Threats</div>
+      <ul>
+        <li>iPhone launch (June 2007) — existential category threat</li>
+        <li>iPod's 76% market share & ecosystem lock-in</li>
+        <li>iTunes' 3 billion songs — massive switching costs</li>
+        <li>Apple Stores: 200+ premium retail experiences</li>
+        <li>Smartphone convergence making players obsolete</li>
+        <li>Music piracy (LimeWire, Napster era)</li>
+        <li>Economic recession (2008–2009)</li>
+        <li>Android growth providing iPod alternatives</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PORTER'S FIVE FORCES -->
+  <div class="framework-header" style="margin-top:80px;">
+    <span class="framework-badge">Framework 02</span>
+    <div class="framework-title">Porter's Five Forces</div>
+  </div>
+  <div class="porter-grid">
+    <div class="porter-item">
+      <div class="porter-force">Competitive Rivalry</div>
+      <div class="porter-desc">Extremely intense. iPod at 76% dominance with 5-year head start, massive brand equity, and network effects from 150M+ devices sold. SanDisk competing on price. Sony in decline but present. A market that Apple had turned into a quasi-monopoly through design excellence and ecosystem lock-in.</div>
+      <div class="porter-rating rating-high">HIGH</div>
+    </div>
+    <div class="porter-item">
+      <div class="porter-force">Threat of New Entrants</div>
+      <div class="porter-desc">High barriers to entry (hardware manufacturing, music licensing, retail distribution, software development) but the real entrant was the iPhone — a device that didn't enter the MP3 player market but made it irrelevant. Convergence threats are harder to see than direct entrants.</div>
+      <div class="porter-rating rating-med">MEDIUM</div>
+    </div>
+    <div class="porter-item">
+      <div class="porter-force">Threat of Substitutes</div>
+      <div class="porter-desc">Catastrophically high and underestimated. The smartphone was the substitute — not another MP3 player. By 2010, iPhones and Android phones had replaced dedicated music players for most consumers. Zune's 5-year roadmap assumed the category would persist; it had roughly 3 years left.</div>
+      <div class="porter-rating rating-high">VERY HIGH</div>
+    </div>
+    <div class="porter-item">
+      <div class="porter-force">Buyer Power</div>
+      <div class="porter-desc">Moderate. Consumers had alternatives (SanDisk, Creative) but the dominant experience expectation was set by iPod. Switching costs from iTunes libraries were psychologically significant — thousands of purchased songs effectively locked consumers into Apple's ecosystem.</div>
+      <div class="porter-rating rating-med">MEDIUM</div>
+    </div>
+    <div class="porter-item">
+      <div class="porter-force">Supplier Power</div>
+      <div class="porter-desc">High from music labels. The "Big Four" (Universal, Sony BMG, Warner, EMI) controlled content access. Microsoft had to negotiate from a weak position — iPod's dominance gave Apple significantly more leverage in label negotiations. Content costs structurally disadvantaged Zune's margin profile.</div>
+      <div class="porter-rating rating-high">HIGH</div>
+    </div>
+  </div>
+
+  <!-- BUSINESS MODEL CANVAS SUMMARY -->
+  <div class="framework-header" style="margin-top:80px;">
+    <span class="framework-badge">Framework 03</span>
+    <div class="framework-title">Business Model Analysis — Osterwalder Canvas</div>
+  </div>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-label">Value Propositions</div>
+      <div class="card-title">Social Music Platform</div>
+      <div class="card-body">Wireless device-to-device sharing · Unlimited streaming via Zune Pass ($14.99/mo + 10 songs to keep) · Metro UI design · Xbox ecosystem integration · HD Radio · Larger screen than iPod</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Revenue Streams</div>
+      <div class="card-title">Multi-Stream Model</div>
+      <div class="card-body">Hardware sales (15–25% margins) · Zune Pass subscriptions ($14.99/mo) · À la carte downloads ($0.99–$1.29/song) · Accessories (40–60% margins). Hardware component costs ~$170/unit for the $249 Zune 30.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Key Weaknesses</div>
+      <div class="card-title">Where the Canvas Broke</div>
+      <div class="card-body">Customer segments too broad and conflicting (gamers + design-conscious consumers). Channels dependent on third-party retailers. Key partnerships (music labels) held structural power over Microsoft. Customer relationships couldn't compete with Apple's store ecosystem.</div>
+    </div>
+  </div>
+
+  <!-- POSITIONING MAP -->
+  <div class="framework-header" style="margin-top:80px;">
+    <span class="framework-badge">Framework 04</span>
+    <div class="framework-title">Competitive Positioning — Ansoff Matrix & STP Analysis</div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="card-accent" style="margin-bottom:20px;">
+        <div class="card-title">Ansoff Matrix Position: Market Penetration (Wrong Choice)</div>
+        <div class="card-body">Zune chose "Market Penetration" — entering an existing market with a new product — in the most dangerous possible version of that quadrant: a market with a dominant incumbent at 76% share. Ansoff's framework suggests Market Penetration only works when the incumbent has structural weaknesses. Apple had almost none in 2006. The correct Ansoff choice would have been "Market Development" (different geography or segment) or "Diversification" (smartphone-first strategy).</div>
+      </div>
+      <div class="card-accent">
+        <div class="card-title">STP Failures</div>
+        <div class="card-body"><strong>Segmentation:</strong> Too broad — targeting music enthusiasts, Xbox gamers, AND design-conscious consumers created identity diffusion. <strong>Targeting:</strong> Wrong primary target — heavy iPod users had highest switching costs. Should have targeted non-iPod owners, students, Xbox households. <strong>Positioning:</strong> "Social music platform" required product comprehension Zune never achieved — most consumers couldn't articulate what made Zune different.</div>
+      </div>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Zune</th>
+            <th>iPod</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Brand Personality</td><td>Social, edgy</td><td>Premium, aspirational</td></tr>
+          <tr><td>Price Strategy</td><td>Competitive / subscription value</td><td>Premium / pay-per-song</td></tr>
+          <tr><td>Key Differentiator</td><td>Wireless sharing & social</td><td>Ecosystem lock-in & simplicity</td></tr>
+          <tr><td>Design Language</td><td>Bold brown/orange</td><td>Minimalist white</td></tr>
+          <tr><td>Content Strategy</td><td>Unlimited streaming</td><td>Ownership model</td></tr>
+          <tr><td>Retail Presence</td><td>Best Buy / Target</td><td>Apple Stores + third-party</td></tr>
+          <tr><td>App Ecosystem</td><td>~50 apps (Zune HD)</td><td>100,000+ (App Store)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4Ps MARKETING MIX -->
+  <div class="framework-header" style="margin-top:80px;">
+    <span class="framework-badge">Framework 05</span>
+    <div class="framework-title">Marketing Mix — The 4 Ps Autopsy</div>
+  </div>
+  <div class="four-col">
+    <div class="card-dark">
+      <div class="card-label" style="color:var(--zune-amber);">Product</div>
+      <div class="card-title">Technically Strong, Experientially Flawed</div>
+      <div class="card-body">Hardware was competitive. Software was bloated and slow. Key features (wireless sharing) had DRM restrictions (3-play/3-day) that killed viral value. Zune HD's OLED display was genuinely superior to iPod Touch's LCD. Product-market fit existed for a niche; mass market appeal was absent.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-label" style="color:var(--zune-amber);">Price</div>
+      <div class="card-title">Correctly Competitive, Wrong Model Timing</div>
+      <div class="card-body">Hardware pricing matched iPod ($249 for 30GB). Zune Pass ($14.99/mo) was genuinely better value than iTunes pay-per-song for heavy listeners. The market wasn't ready to "rent" music — the Spotify decade was 3 years away. Right price, wrong era.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-label" style="color:var(--zune-amber);">Place</div>
+      <div class="card-title">Retail Disadvantage, Geographic Failure</div>
+      <div class="card-body">Dependent on Best Buy/Target where iPod dominated shelf space and sales staff mindshare. No Microsoft Stores until 2009. No international expansion beyond US/Canada. Apple had 200+ stores globally providing controlled, premium experiences. Distribution was a structural disadvantage.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-label" style="color:var(--zune-amber);">Promotion</div>
+      <div class="card-title">"Welcome to the Social" — Abstraction Failure</div>
+      <div class="card-body">$100M+ budget deployed on a tagline that confused consumers. Research showed people couldn't explain what Zune did differently after seeing ads. Compare to iPod's "1,000 songs in your pocket" — concrete, vivid, instantly understood. Brown color scheme (deliberately anti-Apple) generated ridicule.</div>
+    </div>
+  </div>
+</section>
+
+<!-- POST-MORTEM -->
+<section id="postmortem">
+  <p class="section-eyebrow">Post-Mortem Analysis</p>
+  <h2 class="section-title">8 Ways Zune Failed — Categorized</h2>
+  <p class="section-intro">The failure of Zune was not a single mistake. It was a convergence of strategic errors, execution failures, and structural disadvantages that individually might have been survivable — together, they were not.</p>
+
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:13px; letter-spacing:0.15em; text-transform:uppercase; color:var(--zune-orange); margin-bottom:24px;">Strategic Failures</h3>
+      
+      <div class="lesson-item">
+        <div class="lesson-n">01</div>
+        <div>
+          <div class="lesson-title">Wrong Market, Wrong Time</div>
+          <div class="lesson-body">Entered a 76%-dominated market 5 years late, just 7 months before the iPhone rendered the entire category effectively obsolete. Even perfect execution couldn't have overcome this structural position.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">02</div>
+        <div>
+          <div class="lesson-title">Underestimating Ecosystem Lock-In</div>
+          <div class="lesson-body">Users with 1,000+ iTunes songs and $100+ in accessories had enormous sunk-cost switching barriers. Zune's features needed to be 10x better to justify switching — they were ~20% better in some dimensions.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">03</div>
+        <div>
+          <div class="lesson-title">Network Effects Paradox</div>
+          <div class="lesson-body">The core differentiator (Zune-to-Zune wireless sharing) required nearby Zune owners to function. With 2% market share, the feature was effectively useless for 98% of users in real-world scenarios.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">04</div>
+        <div>
+          <div class="lesson-title">Vertical Integration Without Advantages</div>
+          <div class="lesson-body">Copied Apple's vertically integrated model without Apple's advantages: hardware design excellence, retail control, software ecosystem, and 5 years of market-shaping brand equity. Abandoned PlaysForSure partners, alienating the existing ecosystem.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:13px; letter-spacing:0.15em; text-transform:uppercase; color:var(--zune-orange); margin-bottom:24px;">Execution & Org Failures</h3>
+
+      <div class="lesson-item">
+        <div class="lesson-n">05</div>
+        <div>
+          <div class="lesson-title">Internal Division Competition</div>
+          <div class="lesson-body">Zune team and Windows Mobile team competed internally. This organizational fragmentation prevented a unified mobile strategy and is the reason Microsoft had no competitive smartphone until Windows Phone 7 in 2010.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">06</div>
+        <div>
+          <div class="lesson-title">The Leap Year Bug (Dec 31, 2008)</div>
+          <div class="lesson-body">All Zune 30GB devices froze simultaneously due to a firmware bug in handling day 366 of a leap year. The fix: wait 24 hours for the calendar to reset. This became a symbol of quality issues and generated sustained negative press exactly when Zune needed goodwill.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">07</div>
+        <div>
+          <div class="lesson-title">Geographic Myopia</div>
+          <div class="lesson-body">Only launched in the US and Canada. Never expanded to Europe, Asia, or other markets. iPod's global network effects and brand momentum created worldwide dominance Zune couldn't touch without a global strategy.</div>
+        </div>
+      </div>
+
+      <div class="lesson-item">
+        <div class="lesson-n">08</div>
+        <div>
+          <div class="lesson-title">App Ecosystem Failure</div>
+          <div class="lesson-body">Zune HD launched with app support in 2009. The marketplace achieved approximately 50 apps. The App Store had 100,000+. The inability to attract developers was a predictable consequence of 2% market share — developers build where users are.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>"Microsoft tried to beat Apple at Apple's game. Apple had a 5-year head start, cultural cachet, ecosystem lock-in, retail control, and network effects. Zune's innovations weren't enough to overcome these structural advantages. The lesson: don't compete head-on with entrenched leaders in mature markets unless you have a 10x advantage or can redefine the category."</p>
+    <cite>— Core Strategic Finding</cite>
+  </div>
+
+  <!-- Performance Gap Table -->
+  <h3 style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--zune-brown); margin-bottom:24px; font-weight:400;">The Gap Between Ambition and Reality</h3>
+  <div class="metric-row header">
+    <div>Metric</div><div>Target</div><div>Reality</div><div>Gap</div>
+  </div>
+  <div class="metric-row">
+    <div>Peak Market Share</div><div>10–15%</div><div class="metric-miss">2%</div><div class="metric-miss">80–87% shortfall</div>
+  </div>
+  <div class="metric-row">
+    <div>Total Units (5 years)</div><div>20–30 million</div><div class="metric-miss">~2 million</div><div class="metric-miss">90% shortfall</div>
+  </div>
+  <div class="metric-row">
+    <div>Geographic Markets</div><div>10–20 countries</div><div class="metric-miss">2 (US, Canada)</div><div class="metric-miss">80–90% shortfall</div>
+  </div>
+  <div class="metric-row">
+    <div>App Ecosystem</div><div>Thousands of apps</div><div class="metric-miss">~50 apps</div><div class="metric-miss">99% shortfall</div>
+  </div>
+  <div class="metric-row">
+    <div>Financial Position</div><div>Break even by Year 3</div><div class="metric-miss">$billions in losses</div><div class="metric-miss">Never profitable</div>
+  </div>
+</section>
+
+<!-- LEGACY & LESSONS -->
+<section id="lessons">
+  <p class="section-eyebrow">Legacy & Strategic Lessons</p>
+  <h2 class="section-title">What Zune Got Right — and What Lasts</h2>
+  <p class="section-intro">Failure is the most fertile ground for learning. Zune's failure was expensive, but its contributions to product design, business model thinking, and strategic warning signs endure.</p>
+
+  <div class="two-col" style="margin-bottom:64px;">
+    <div>
+      <h3 style="font-family:'DM Serif Display',serif; font-size:22px; color:var(--zune-brown); margin-bottom:24px; font-weight:400;">What Zune Got Right (Ahead of Its Time)</h3>
+      <div class="card-accent" style="margin-bottom:16px;">
+        <div class="card-title">The Subscription Music Model</div>
+        <div class="card-body">Zune Pass ($14.99/mo with 10 songs to keep) is the exact model that powers Spotify, Apple Music, and every streaming service today. Microsoft was right about the future — the market simply wasn't ready in 2006–2011.</div>
+      </div>
+      <div class="card-accent" style="margin-bottom:16px;">
+        <div class="card-title">Metro/Modern UI Design Language</div>
+        <div class="card-body">Zune's typography-first, content-over-chrome design language became Windows Phone 7, Windows 8, and Xbox One's visual language. The design's influence is visible in every tile-based, text-forward UI in the industry today.</div>
+      </div>
+      <div class="card-accent">
+        <div class="card-title">Dynamic Album Art Theming</div>
+        <div class="card-body">Zune extracted dominant colors from album artwork to dynamically theme its UI — years before iOS 7 and Spotify adopted identical patterns. This was genuinely innovative and is now universal.</div>
+      </div>
+    </div>
+    <div>
+      <img src="https://statics.fellou.ai/user-contents/1774690585920-cbe1uq.png" alt="Zune Timeline" style="width:100%; border-radius:1px; margin-bottom:10px;">
+      <p class="img-caption">Microsoft Zune Product Timeline: 2006–2011</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'DM Serif Display',serif; font-size:28px; color:var(--zune-brown); margin-bottom:36px; font-weight:400;">10 PM Specific Takeaways from this case.</h3>
+
+  <div class="lesson-item">
+    <div class="lesson-n">01</div>
+    <div>
+      <div class="lesson-title">Market Timing Beats Innovation</div>
+      <div class="lesson-body">Being right about the future (subscription music, social discovery) doesn't win markets if you're too early or too late. Rigorous assessment of market lifecycle stage, incumbent entrenchment, and disruption horizon is prerequisite to market entry decisions.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">02</div>
+    <div>
+      <div class="lesson-title">Network Effects Create Insurmountable Moats</div>
+      <div class="lesson-body">When a product's value scales with user count (Zune's sharing, iPod's accessory ecosystem), entering from zero is structurally disadvantageous. Either build network effects differently, or don't compete on network-effect dimensions.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">03</div>
+    <div>
+      <div class="lesson-title">Don't Build Core Value on Unproven Network Density</div>
+      <div class="lesson-body">Zune-to-Zune sharing was a core value proposition that required adjacent Zune owners to function. This was a fatal dependency at launch. Features that require user density to deliver value should not be primary differentiators for challenger products entering markets from zero.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">04</div>
+    <div>
+      <div class="lesson-title">Brand Equity Cannot Be Purchased Overnight</div>
+      <div class="lesson-body">$100M in marketing cannot manufacture the cultural authenticity that Apple built through years of design excellence, retail experience, and "1,000 songs in your pocket." Brand equity compounds over time. Microsoft entered a brand equity war 5 years too late.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">05</div>
+    <div>
+      <div class="lesson-title">Message Concreteness Beats Message Aspiration</div>
+      <div class="lesson-body">"Welcome to the Social" vs. "1,000 songs in your pocket." Both are taglines for portable music players. One tells you exactly what the product does. One asks you to join a community you can't see. In mass-market consumer products, concrete beats aspirational at the awareness stage.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">06</div>
+    <div>
+      <div class="lesson-title">Differentiation Must Be Discoverable</div>
+      <div class="lesson-body">Zune's innovations (wireless sharing, Zune Social) were buried in menus and required other Zune owners to demonstrate. Users never naturally discovered the differentiating features. Innovation that isn't discoverable is invisible — and invisible features don't drive word-of-mouth.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">07</div>
+    <div>
+      <div class="lesson-title">Software Performance Is a Product Feature</div>
+      <div class="lesson-body">Zune PC Software was slow, bloated, and worse than iTunes on the same hardware. Daily friction in the software layer undermines even excellent hardware. Performance is not a feature — it is a prerequisite. Everything else is secondary to it.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">08</div>
+    <div>
+      <div class="lesson-title">Watch the Disruption Horizon, Not Just the Competition</div>
+      <div class="lesson-body">Apple announced the iPhone in January 2007 — two months after Zune launched. The convergence of phone and media player was visible. Microsoft's Zune roadmap should have been immediately pivoted. Instead, Zune HD launched as a touchscreen media player in 2009 — competing with the App Store-equipped iPod Touch in the shadow of the smartphone era.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">09</div>
+    <div>
+      <div class="lesson-title">Consider Software/Service Before Hardware</div>
+      <div class="lesson-body">The highest-ROI version of Zune would have been a software-only strategy: Zune Pass as a service available on all Windows PCs and devices, without the hardware cost and manufacturing complexity. This is what Spotify executed. Microsoft had the licensing relationships and the platform — it chose the harder path.</div>
+    </div>
+  </div>
+
+  <div class="lesson-item">
+    <div class="lesson-n">10</div>
+    <div>
+      <div class="lesson-title">Organizational Alignment is Strategy</div>
+      <div class="lesson-body">Internal competition between Zune, Windows Mobile, and Windows Media teams fragmented Microsoft's mobile and media strategy at the exact moment decisive action was required. The organizational failure to align around a unified mobile platform — combining Zune's media strength with Windows Mobile's phone capability — is arguably the most costly strategic error in this case study.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <p class="section-eyebrow">Product Lifecycle</p>
+  <h2 class="section-title">2006 – 2011: Five Years in the Arena</h2>
+  <div class="two-col">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">Q3 2006 — Pre-Launch</div>
+        <div class="timeline-event">Strategic Planning & Retail Partnerships</div>
+        <div class="timeline-desc">$100M+ marketing budget committed. Best Buy, Target, Walmart partnerships established. "Welcome to the Social" campaign developed. Pre-launch music blog seeding begins.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">November 2006</div>
+        <div class="timeline-event">Zune 30 Launch</div>
+        <div class="timeline-desc">30GB HDD model launches at $249, matching iPod pricing. Signature brown color, 3" LCD, built-in Wi-Fi, FM Radio. Achieves ~1.2M units vs. 3–5M target.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">June 2007</div>
+        <div class="timeline-event">The iPhone Arrives</div>
+        <div class="timeline-desc">Apple launches iPhone 7 months after Zune. Category disruption begins. The MP3 player's clock starts ticking. Microsoft's response will take 2 more years.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">November 2007</div>
+        <div class="timeline-event">Zune 2.0 — Flash Models & Subscription</div>
+        <div class="timeline-desc">Zune 4/8 (flash) and Zune 80/120 (HDD) launch. Zune Pass subscription with 10-song-to-keep model introduced. Marketplace grows to 3M tracks.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">December 31, 2008</div>
+        <div class="timeline-event">The Leap Year Bug</div>
+        <div class="timeline-desc">All Zune 30 devices freeze globally. Firmware cannot process day 366 of a leap year. Fix: wait 24 hours. Permanent reputational damage.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">September 2009</div>
+        <div class="timeline-event">Zune HD — The Last Gasp</div>
+        <div class="timeline-desc">OLED touchscreen, NVIDIA Tegra processor, HD Radio, app support. The best device Zune ever produced — arrives 2 years after iPhone, competing in a market already dominated by the App Store.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">October 2011</div>
+        <div class="timeline-event">Hardware Discontinued</div>
+        <div class="timeline-desc">Microsoft officially discontinues Zune hardware. Zune services continue to power Windows Phone. The Zune brand quietly dissolves into Xbox Music by 2012.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card-dark" style="margin-bottom:24px;">
+        <div class="card-label">The Strategic Counterfactual</div>
+        <div class="card-title">What If Microsoft Had Gone Software-First?</div>
+        <div class="card-body" style="margin-bottom:20px;">Zune Pass as a platform — available on all hardware, not just Zune devices — would have been the most viable path. Microsoft had the label relationships, the catalog (11M+ tracks), and the Windows platform with 90%+ PC market share.</div>
+        <div class="card-body">This is precisely what Spotify executed from 2008 onwards: software-first, hardware-agnostic, subscription-based. Microsoft had a 2-year head start in business model thinking and threw it away by tying the service to proprietary hardware.</div>
+      </div>
+      <div class="card-accent">
+        <div class="card-title">Zune's Enduring Legacy</div>
+        <div class="card-body">Metro UI → Windows Phone 7, Windows 8, Xbox One · Subscription streaming model → the entire music industry · Dynamic UI theming from album art → Spotify, Apple Music, iOS 7 · Typography-first design → mainstream post-skeuomorphism UI philosophy. Zune lost the market. Its ideas won the decade.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-title">Microsoft Zune</div>
+      <div class="footer-by">A product case study by Siddhanta Ghosh</div>
+    </div>
+   
+</footer>
+
+<script>
+  // Smooth scroll nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 100) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.style.color = '';
+      if (link.getAttribute('href') === '#' + current) {
+        link.style.color = 'var(--zune-orange)';
+      }
+    });
+  });
+
+  // Animate bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.dataset.width;
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.mkt-bar-fill').forEach(bar => {
+    const w = bar.style.width;
+    bar.dataset.width = w;
+    bar.style.width = '0';
+    observer.observe(bar);
+  });
+</script>
+</body>
+</html>
